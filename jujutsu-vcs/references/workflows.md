@@ -76,7 +76,7 @@ jj edit <change-id>
 # 3. jj auto-saves changes (no explicit save)
 
 # 4. Optionally squash back to original position
-jj squash -into <original-commit>
+jj squash --into <original-commit>
 ```
 
 ### When to Use
@@ -138,7 +138,7 @@ jj describe -m "partial change"  # Describe first part
 jj new                          # Next part
 # ... rest of changes ...
 
-jj squash -into <first-part>   # Combine
+jj squash --into <first-part>   # Combine
 ```
 
 ---
@@ -171,7 +171,7 @@ jj workspace add --name myproject-agentB-feature -r main@origin ../myproject-age
    ```
 4. **Always fetch first** - Before any rebase:
    ```bash
-   jj git fetch && jj rebase -d main@origin
+   jj git fetch && jj rebase -o main@origin
    ```
 
 ### Safety Rules

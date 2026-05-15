@@ -65,19 +65,19 @@ You never "stage" - changes are immediately part of `@`.
 | `git branch <name>` | `jj bookmark create <name>` | |
 | `git branch -d <name>` | `jj bookmark delete <name>` | |
 | `git merge <ref>` | `jj new <a> <b>` | Create merge commit |
-| `git rebase <base>` | `jj rebase -s <src> -d <dest>` | |
+| `git rebase <base>` | `jj rebase -s <src> -o <dest>` | `-d` is alias for `-o` |
 | `git merge --squash` | `jj squash` | |
 | `git reset --soft` | `jj undo` | |
 | `git reset --hard` | **AVOID** | Use `jj undo` |
 | `git stash` | `jj new -m "temp"` | Create temp commit |
 | `git stash pop` | `jj edit <stash>` | |
 | `git fetch` | `jj git fetch` | |
-| `git pull` | `jj git fetch && jj rebase -d main@origin` | |
+| `git pull` | `jj git fetch && jj rebase -o main@origin` | |
 | `git push` | `jj git push` | |
 | `git push -f` | N/A | jj has no force push |
 | `git worktree add` | `jj workspace add` | |
 | `git reflog` | `jj op log` | Better! |
-| `git revert <ref>` | `jj new -m "Revert..."` | Manual |
+| `git revert <ref>` | `jj revert <rev>` | Reverse a revision's changes |
 
 ---
 
@@ -277,7 +277,6 @@ git merge --no-ff <branch>
 
 # Jujutsu
 jj new <main> <feature>       # Create merge commit
-jj merge <branch>             # v0.36+ experimental
 ```
 
 #### Rebase
@@ -288,8 +287,7 @@ git rebase -i <base>
 git rebase --onto <new> <old> <branch>
 
 # Jujutsu
-jj rebase -s <source> -d <dest>
-jj rebase -s <source> -o <dest>    # v0.36+ syntax
+jj rebase -s <source> -o <dest>
 # Note: jj rebase is ALWAYS non-interactive
 ```
 
@@ -301,7 +299,7 @@ git rebase -i (squash in editor)
 
 # Jujutsu
 jj squash                     # Into parent
-jj squash -into <target>      # Into specific commit
+jj squash --into <target>     # Into specific commit (alias: --to, -t)
 ```
 
 #### Split Commit
@@ -371,7 +369,7 @@ git pull --rebase
 
 # Jujutsu
 jj git fetch
-jj rebase -d main@origin
+jj rebase -o main@origin
 ```
 
 #### Push
@@ -419,7 +417,6 @@ git worktree remove <path>
 
 # Jujutsu
 jj workspace forget <name>    # Keeps files
-jj workspace delete <name>   # Deletes (rarely needed)
 ```
 
 ---
@@ -537,7 +534,7 @@ git push --force
 
 # Jujutsu
 jj git fetch
-jj rebase -s @ -d main@origin
+jj rebase -s @ -o main@origin
 jj git push
 # No force push needed!
 ```

@@ -30,7 +30,7 @@ A comprehensive skill for working with Jujutsu (jj), a Git-compatible version co
 | Symbol | Meaning | Example |
 |--------|---------|---------|
 | `@` | Current working copy | `jj log -r @` |
-| `@-`, `@--` | Parent, grandparent of working copy | `jj squash -into @-` |
+| `@-`, `@--` | Parent, grandparent of working copy | `jj squash --into @-` |
 | `@+` | Child of working copy | `jj new @+` |
 | `x::y` | Range: ancestors of x through descendants of y (inclusive) | `main::` |
 | `x..y` | Range: descendants of x excluding y | `main..@` |
@@ -107,8 +107,8 @@ jj squash                    # Move all changes into parent commit
 jj squash -m "message"       # Squash with custom message
 jj absorb                   # Auto-distribute changes to ancestor commits
 jj split -r <rev> <paths>   # Split commit by file paths
-jj rebase -s <src> -d <dest>    # Rebase source onto destination
-jj rebase -s <src> -o <dest>    # New syntax (v0.36+): onto
+jj rebase -s <src> -o <dest>    # Rebase source onto destination
+jj rebase -r <rev> -o <dest>    # Rebase single revision (no descendants)
 jj duplicate <rev>          # Create copy (SAFE before destructive ops)
 ```
 
@@ -127,6 +127,25 @@ jj git fetch               # Fetch from remote
 jj git push                # Push all
 jj git push --bookmark <name>  # Push specific bookmark
 jj git push --bookmark <name> --remote <remote>
+```
+
+### Navigating
+
+```bash
+jj next                       # Move to child revision
+jj prev                       # Move to parent revision
+```
+
+### Reverting
+
+```bash
+jj revert <rev>               # Reverse a revision's changes
+```
+
+### Evolog
+
+```bash
+jj evolog                     # Show how a change evolved over time
 ```
 
 ### Recovery & Safety (CRITICAL)
@@ -228,7 +247,7 @@ jj edit <change-id>
 #    The changes are part of the working copy
 
 # 4. Move back to original position if needed
-jj squash -into <original-commit>
+jj squash --into <original-commit>
 ```
 
 ### Pattern 3: Parallel Agents (Colocated)
@@ -283,7 +302,7 @@ jj resolve <path>
 jj new -m "Resolve conflict in file.rs"
 
 # 5. Squash into the conflict commit if desired
-jj squash -into <conflict-commit>
+jj squash --into <conflict-commit>
 ```
 
 ---

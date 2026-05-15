@@ -215,7 +215,6 @@ jj op restore <operation-id>    # Restores to past state
 jj util gc                       # Garbage collection
 jj bookmark delete <shared>     # Delete shared bookmark  
 jj abandon <shared-commit>       # Abandon shared commit
-jj workspace delete <name>      # Delete workspace
 ```
 
 ### Emergency Git Bailout
@@ -265,7 +264,7 @@ jj resolve           # resolve all
 jj new -m "Resolve merge conflict"
 
 # 6. Squash if desired
-jj squash -into <conflict-commit>
+jj squash --into <conflict-commit>
 ```
 
 ### Multiple Conflicts
