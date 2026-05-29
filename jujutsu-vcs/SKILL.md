@@ -1,5 +1,5 @@
 ---
-name: jujutsu-vcs
+name: jujutsu-jj-vcs
 description: Jujutsu (jj) version control system mastery. Use when working with jj, jujutsu, commits, branches, bookmarks, rebasing, splitting, workspaces, or any VCS operations. Handles basic operations and routes to references for advanced workflows. Covers jj syntax (@, change-id, revsets), Git differences, staged commits, parallel agents, and recovery.
 ---
 
