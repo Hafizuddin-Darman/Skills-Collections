@@ -314,8 +314,6 @@ jj duplicate <rev>                # Duplicate revision (creates copy)
 jj duplicate <rev>..<rev>         # Duplicate range
 ```
 
-**Important:** Always duplicate before destructive operations like split or rebase.
-
 ---
 
 ## Conflicts

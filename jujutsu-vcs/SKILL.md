@@ -1,6 +1,6 @@
 ---
 name: jujutsu-jj-vcs
-description: Jujutsu (jj) version control system mastery. Use when working with jj, jujutsu, commits, branches, bookmarks, rebasing, splitting, workspaces, or any VCS operations. Handles basic operations and routes to references for advanced workflows. Covers jj syntax (@, change-id, revsets), Git differences, staged commits, parallel agents, and recovery.
+description: Jujutsu (jj) version control system mastery. Use when working with jj, jujutsu, commits, branches, bookmarks, rebasing, splitting, workspaces, or any VCS operations. Handles basic operations and routes to references for advanced workflows.
 ---
 
 # Jujutsu (jj) VCS
@@ -29,7 +29,7 @@ jj squash                      # Move changes to parent
 jj absorb                      # Distribute to ancestors
 jj split -r <rev> <paths>      # Split commit
 jj rebase -s <src> -o <dest>   # Rebase (-d is alias for -o)
-jj duplicate <rev>             # Safe copy (before destructive ops)
+jj duplicate <rev>             # Safe copy of a commit
 jj bookmark set <name>         # Move bookmark to @
 jj git fetch && jj git push    # Remote ops
 jj undo                        # Undo last operation
@@ -88,14 +88,14 @@ Prefer **describe → new**: the two steps compose, and `jj commit` is sugar for
 - One workspace per parallel task
 - `jj git fetch` before push
 - `jj duplicate` before destructive ops
-- End every commit with an empty `@` — `jj commit` clears it automatically; bare `jj describe` does NOT and needs a follow-up `jj new`
+- End every commit with an empty `@`
 
 ### ❌ Never
 - Interactive commands (`jj split -i`, `jj diffedit`)
 - `git reset --hard` — use `jj undo`
 - Share workspace paths between agents
 - Skip `-m` flag (blocks on editor)
-- `jj util snapshot` to "save" work — `@` auto-snapshots every command; finish work with `jj describe`/`jj new` or `jj commit`
+- `jj util snapshot` to "save" work (see Committing Work above)
 
 ### Multi-Agent Safety
 - Workspace per agent: `jj workspace add --name <agent>-<task>`
@@ -112,9 +112,6 @@ Prefer **describe → new**: the two steps compose, and `jj commit` is sugar for
 **Revset ops:** `x::y` (range), `x..y` (descendants), `x|y` (union), `x&y` (intersect)
 
 **Git→jj:** branch→bookmark, checkout→edit, add→(none, auto-track), stash→`jj new`
-
-**Read `references/revsets.md` for full syntax →**
-**Read `references/git-differences.md` for complete mapping →**
 
 ---
 

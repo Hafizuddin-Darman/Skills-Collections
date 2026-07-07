@@ -373,9 +373,9 @@ jj log -r 'empty() & mine()'
    - ✅ `jj edit qzvzulzz`
    - ❌ `jj edit abc123def456`
 
-3. **Pipe in shell vs revset**: In shell, pipe must be escaped
-   - ✅ `jj log -r 'main | develop'`
-   - ❌ `jj log -r 'main | develop'` (in bash without quotes)
+3. **Pipe in shell vs revset**: The `|` is a shell pipe unless the revset is quoted
+   - ✅ `jj log -r 'main | develop'` (quoted — revset union)
+   - ❌ `jj log -r main | develop` (unquoted — shell parses `|` as pipe)
 
 4. **Glob in fileset**: In v0.36+, globs are default. Explicit: `glob("*.rs")`
 

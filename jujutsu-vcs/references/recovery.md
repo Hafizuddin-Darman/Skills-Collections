@@ -189,21 +189,7 @@ jj resolve <file>
 
 ## Safety Rules
 
-### Multi-Agent Safety Rules
-
-**ALWAYS:**
-- ✅ Create separate workspace per agent
-- ✅ Use change IDs for coordination
-- ✅ Fetch before any rebase: `jj git fetch`
-- ✅ Use `jj duplicate` before destructive ops
-- ✅ Check `jj op log` before dangerous operations
-
-**NEVER:**
-- ❌ Share workspace paths between agents
-- ❌ Use `jj op restore` without approval
-- ❌ Use `jj util gc`
-- ❌ Delete shared bookmarks
-- ❌ Abandon commits others might need
+General agent rules (workspace per agent, change IDs, fetch before rebase, duplicate before destructive) live in `SKILL.md`. Below: recovery-specific approval gates.
 
 ### Forbid These Without Approval
 
@@ -238,53 +224,19 @@ jj git init --colocate
 
 ## Conflict Recovery
 
-### Conflicted After Rebase
-
-```bash
-# 1. See conflicts
-jj st
-jj resolve --list
-
-# 2. Open conflicted files
-# jj conflict format:
-# <<<<<<<
-# content from one side
-# =======
-# content from other side
-# >>>>>>>
-
-# 3. Edit to resolve
-
-# 4. Mark resolved
-jj resolve <path>
-# or:
-jj resolve           # resolve all
-
-# 5. Create resolution commit
-jj new -m "Resolve merge conflict"
-
-# 6. Squash if desired
-jj squash --into <conflict-commit>
-```
-
-### Multiple Conflicts
-
-```bash
-# Handle one at a time
-jj resolve --list          # See all
-jj resolve <file1>         # Resolve first
-# check, verify
-jj resolve <file2>         # Next one
-# ...
-```
+Made a mess during conflict resolution? The normal conflict-resolution steps live in `references/workflows.md` §7. Recovery angle only:
 
 ### Abandon Resolution Attempt
 
 ```bash
 # Went wrong direction?
 jj undo                    # Back to conflicted state
-# try different resolution
+# retry with a different resolution
 ```
+
+### Multiple Conflicts Overwhelming
+
+Resolve one file at a time, `jj resolve --list` between each — don't batch.
 
 ---
 

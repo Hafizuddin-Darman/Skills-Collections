@@ -176,10 +176,7 @@ jj workspace add --name myproject-agentB-feature -r main@origin ../myproject-age
 
 ### Safety Rules
 
-- NEVER: `jj op restore` without approval
-- NEVER: `jj util gc`
-- NEVER: `jj bookmark delete` on shared bookmarks
-- NEVER: abandon commits another agent might need
+Destructive-op forbid list (`op restore`, `util gc`, shared bookmark delete, shared abandon) lives in `references/recovery.md`.
 
 ### Workspace Naming
 
@@ -358,49 +355,7 @@ jj squash -into <conflicted-commit>
 
 ## 8. Recovery Workflow
 
-### Recovery Ladder (in order)
-
-```bash
-# Level 1: Immediate undo
-jj undo
-
-# Level 2: See what happened
-jj op log
-jj op log --no-graph
-
-# Level 3: Check past state
-jj --at-op <operation-id> status
-
-# Level 4: Restore (DANGEROUS - ask user first!)
-jj op restore <operation-id>
-```
-
-### Finding What You Lost
-
-```bash
-# See all operations
-jj op log
-
-# Check a specific point
-jj --at-op <id> log
-
-# See what was there
-jj --at-op <id> show <rev>
-```
-
-### Emergency: jj State Corrupted
-
-```bash
-# In colocated repo, delete .jj only:
-rm -rf .jj
-
-# Your .git is still intact!
-# Reinitialize:
-jj git init --colocate
-
-# Or just use Git:
-git checkout .
-```
+Recovery procedures live in `references/recovery.md` — full recovery ladder (undo → op log → at-op → restore), finding lost commits, and emergency `.jj` corruption steps.
 
 ---
 
@@ -428,42 +383,6 @@ jj git init --colocate
 
 # Or: jj can import from Git
 jj git import
-```
-
----
-
-## 10. Conventional Commits
-
-Recommended message format:
-
-```
-<type>(<scope>): <description>
-
-[optional body]
-
-[optional footer]
-```
-
-### Types
-
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation
-- `style`: Formatting
-- `refactor`: Code restructuring
-- `perf`: Performance
-- `test`: Tests
-- `build`: Build system
-- `ci`: CI/CD
-- `chore`: Maintenance
-
-### Examples
-
-```bash
-jj new -m "feat(auth): add login endpoint"
-jj new -m "fix(api): handle null response"
-jj new -m "docs: update README"
-jj new -m "refactor(db): extract connection pool"
 ```
 
 ---
