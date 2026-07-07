@@ -44,7 +44,7 @@ jj op log                      # Operation history
 
 jj has **no save step.** Every command auto-snapshots your working copy into `@`, so changes are captured the moment you make them. You never "snapshot to save" — you *name the current commit and move on.*
 
-Two paths to finish `@` and get a clean working copy. Both land in the same end state: your changes live in `@-` with the message, and `@` is a fresh empty commit.
+**A commit is not finished until `@` is empty.** Both paths below land in the same end state: your changes live in `@-` with the message, and `@` is a fresh, *empty* commit. That empty `@` is the safety property — later accidental edits (by you, the user, or another agent) land in a brand-new commit and can never pollute the work you just saved.
 
 | Pattern | Commands | Use when |
 |---------|----------|----------|
@@ -59,6 +59,8 @@ jj new                              # fresh empty @ → your work now lives in @
 # One-shot shortcut — describe + new combined (behaves like git commit)
 jj commit -m "feat: add login"
 ```
+
+**`jj describe` alone does NOT clear `@`.** It only sets the message — the work stays in `@` until you run `jj new`. Skip the `jj new` and the next edit silently mutates your "finished" commit. `jj commit` avoids this footgun because it runs `jj new` for you.
 
 Prefer **describe → new**: the two steps compose, and `jj commit` is sugar for the same pair.
 
@@ -86,6 +88,7 @@ Prefer **describe → new**: the two steps compose, and `jj commit` is sugar for
 - One workspace per parallel task
 - `jj git fetch` before push
 - `jj duplicate` before destructive ops
+- End every commit with an empty `@` — `jj commit` clears it automatically; bare `jj describe` does NOT and needs a follow-up `jj new`
 
 ### ❌ Never
 - Interactive commands (`jj split -i`, `jj diffedit`)
