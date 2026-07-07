@@ -22,7 +22,8 @@ description: Jujutsu (jj) version control system mastery. Use when working with 
 jj st                          # Status
 jj log -r @                    # Log (filter with -r)
 jj new -m "message"            # Create commit
-jj describe -m "msg"           # Update message
+jj describe -m "msg"           # Update message (shorthand: jj desc)
+jj commit -m "msg"             # describe + new in one (git-style)
 jj edit <rev>                  # Switch working copy to rev
 jj squash                      # Move changes to parent
 jj absorb                      # Distribute to ancestors
@@ -36,6 +37,32 @@ jj op log                      # Operation history
 ```
 
 **Read `references/commands.md` for full command docs →**
+
+---
+
+## Committing Work — the "git commit" equivalent
+
+jj has **no save step.** Every command auto-snapshots your working copy into `@`, so changes are captured the moment you make them. You never "snapshot to save" — you *name the current commit and move on.*
+
+Two paths to finish `@` and get a clean working copy. Both land in the same end state: your changes live in `@-` with the message, and `@` is a fresh empty commit.
+
+| Pattern | Commands | Use when |
+|---------|----------|----------|
+| **describe → new** (primary) | `jj describe -m "msg"` then `jj new` | Still shaping the message, or re-describing before you're happy |
+| **commit** (one-shot) | `jj commit -m "msg"` | You want the git-commit feel in a single step |
+
+```bash
+# Primary: name the current @, then clear the working copy
+jj describe -m "feat: add login"   # set message on current @ (changes already there)
+jj new                              # fresh empty @ → your work now lives in @-
+
+# One-shot shortcut — describe + new combined (behaves like git commit)
+jj commit -m "feat: add login"
+```
+
+Prefer **describe → new**: the two steps compose, and `jj commit` is sugar for the same pair.
+
+> **Never** run `jj util snapshot` to "save" work. The working copy is always already snapshotted into `@`; `jj util snapshot` is a scripting helper that creates and names **no commit**. To finish work, use `jj describe` + `jj new`, or `jj commit`.
 
 ---
 
@@ -65,6 +92,7 @@ jj op log                      # Operation history
 - `git reset --hard` — use `jj undo`
 - Share workspace paths between agents
 - Skip `-m` flag (blocks on editor)
+- `jj util snapshot` to "save" work — `@` auto-snapshots every command; finish work with `jj describe`/`jj new` or `jj commit`
 
 ### Multi-Agent Safety
 - Workspace per agent: `jj workspace add --name <agent>-<task>`
